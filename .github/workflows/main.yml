@@ -48,8 +48,18 @@ jobs:
     - name: "Clone"
       uses: actions/checkout@v3
       with:
-        submodules: recursive
+        submodules: false
         fetch-depth: 0
+    
+    - name: "Initialize selected submodules"
+      shell: bash
+      run: |
+        git submodule update --init --recursive cmake/clang
+        git submodule update --init --recursive cmake/version
+        git submodule update --init --recursive third-party/msvc-redist-helper
+        git submodule update --init --recursive third-party/nlohmann-json
+        git submodule update --init --recursive third-party/obs-studio
+    
     - name: "Gather Information"
       id: info
       shell: bash
@@ -155,7 +165,8 @@ jobs:
           -Dlibobs_DIR="${{ github.workspace }}/build/obs/install" \
           -DQt${{ matrix.qt }}_DIR="${{ github.workspace }}/build/qt" \
           -DFFmpeg_DIR="${{ github.workspace }}/build/obsdeps" \
-          -DCURL_DIR="${{ github.workspace }}/build/obsdeps"
+          -DCURL_DIR="${{ github.workspace }}/build/obsdeps" \
+          -DENABLE_NVIDIA=OFF
     - name: "Build: Debug"
       continue-on-error: true
       shell: bash
@@ -210,8 +221,18 @@ jobs:
     - name: "Clone"
       uses: actions/checkout@v3
       with:
-        submodules: recursive
+        submodules: false
         fetch-depth: 0
+    
+    - name: "Initialize selected submodules"
+      shell: bash
+      run: |
+        git submodule update --init --recursive cmake/clang
+        git submodule update --init --recursive cmake/version
+        git submodule update --init --recursive third-party/msvc-redist-helper
+        git submodule update --init --recursive third-party/nlohmann-json
+        git submodule update --init --recursive third-party/obs-studio
+    
     - name: "Gather Information"
       id: info
       shell: bash
@@ -312,7 +333,8 @@ jobs:
           -Dlibobs_DIR="${{ github.workspace }}/build/obs/install" \
           -DQt${{ matrix.qt }}_DIR="${{ github.workspace }}/build/qt" \
           -DFFmpeg_DIR="${{ github.workspace }}/build/obsdeps" \
-          -DCURL_DIR="${{ github.workspace }}/build/obsdeps"
+          -DCURL_DIR="${{ github.workspace }}/build/obsdeps" \
+          -DENABLE_NVIDIA=OFF
     - name: "Build: Debug"
       continue-on-error: true
       shell: bash
